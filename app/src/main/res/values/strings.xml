@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="car_name">Focus</string>
+    <string name="car_desc">2015 Fully Loaded</string>
 </resources>
