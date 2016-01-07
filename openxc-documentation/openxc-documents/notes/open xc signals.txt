@@ -1,0 +1,81 @@
+Open XC Signals
+
+Source: http://openxcplatform.com/about/data-set.html
+
+steering_wheel_angle
+-600 to +600 degrees
+Frequency: max 10Hz
+
+torque_at_transmission
+-500 to 1500 Nm
+Frequency: max 10Hz
+
+engine_speed
+0 to 16382 RPM
+Frequency: max 10Hz
+
+vehicle_speed
+0 to 655 km/h (this will be positive even if going in reverse as it's not a velocity, although you can use the gear status to figure out direction)
+Frequency: max 10Hz
+
+accelerator_pedal_position
+0 to 100%
+Frequency: max 10Hz
+
+parking_brake_status
+Boolean (true == brake engaged)
+Frequency: 1Hz and immediately on change
+
+brake_pedal_status
+Boolean (True == pedal pressed)
+Frequency: 1Hz and immediately on change
+
+transmission_gear_position
+States: first, second, third, fourth, fifth, sixth, seventh, eighth, reverse, neutral
+Frequency: 1Hz and immediately on change
+
+odometer
+0 to 16777214.000 km, with about .2m resolution
+Frequency: max 10Hz
+
+ignition_status
+States: off, accessory, run, start
+Frequency: 1Hz and immediately on change
+
+fuel_level
+0 - 100%
+Frequency: max 2Hz
+
+fuel_consumed_since_restart
+0 - 4294967295.0 L (this goes to 0 every time the vehicle restarts, like a trip meter)
+Frequency: max 10Hz
+
+door_status
+Value is State: driver, passenger, rear_left, rear_right. Event is Boolean: true == ajar
+Frequency: 1Hz and immediately on change
+
+headlamp_status
+Boolean, true is on
+Frequency: 1Hz and immediately on change
+
+high_beam_status
+Boolean, true is on
+Frequency: 1Hz and immediately on change
+
+windshield_wiper_status
+Boolean, true is on
+Frequency: 1Hz and immediately on change
+
+latitude
+-89.0 to 89.0 degrees with standard GPS accuracy
+Frequency: max 1Hz
+
+longitude
+-179.0 to 179.0 degrees with standard GPS accuracy
+Frequency: max 1Hz
+
+button_event
+Value is State: left, right, up, down, ok.
+Event is State: idle, pressed, released, held_short, held_long, stuck
+(The buttons this message refer to are highly dependent on the specific vehicle, but if it's supported, try the steering wheel buttons.)
+Frequency: Sent only if value changes

@@ -1,0 +1,50 @@
+9:08 AM 10/9/2015
+
+OpenXC Research
+
+Driving more Efficiently 
+
+SOurce: https://www.fueleconomy.gov/feg/driveHabits.jsp
+
+-Drive Sensibly (aggressive driving like speeding, rapid acceleration and braking will waste gas)
+-Speed Limit (when you drive over the speed limit 50mph the gas mileage usually decrease)
+-Cargo doesn't exceed the limit of 100pounds this would decrease your mpg by 1%
+-idling (using your ac while in park or just in park. need to drive atleast 5 miles between start cycles to fully recharge battery
+amd limit to starting your 10x a day (note that any shutdown longer than 1 minute will save you money 
+
+
+
+Supported Vehicles
+Source: http://openxcplatform.com/hardware/vehicles.html
+
+USB Programming 
+Source : http://vi.openxcplatform.com/firmware/programming/usb.html
+
+This website expresses how to program the vehicle interface with different type of operating systems 
+
+
+Meeting with Dr. Perry and Dr. Bernadin 
+-we could research about the 
+
+
+FUEL EFFICIENCY IS THE GOAL
+
+Idling - REZ
+Signals we need 
+-ignition_status
+-vehicle speed
+-transmission_gear_position 
+-odometer (show the total distance 
+-cargo weight limit? we could ask Tellis if there is a signal 
+- signal on how long the car has been on 
+**ignition status how long it was on RUN
+
+
+
+Beginning settings of the app
+*Select the car and year*
+**All Vehicles Sold in the U.S. Since 2008**
+
+
+Next Step: http://openxcplatform.com/vehicle-interface/firmware.html 
+

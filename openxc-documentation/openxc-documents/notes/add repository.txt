@@ -1,0 +1,20 @@
+--Repository--
+
+Command Lines for Git CMD: https://confluence.atlassian.com/stash/basic-git-commands-278071958.html#notfound
+Download Git: https://git-scm.com/downloads
+
+Open Git CMD
+go to the folder you want to add the repository 
+$cd C:\folderlocation
+$git init
+$git add "filename"
+$git config --global user.email "place email that with your gitbu account"
+$git config --global user.name "name"
+$git commit -m "description of file" 
+
+$git pull https://github.com/eatondo/openxc.git
+$git remote add orgin https://github.com/eatondo/openxc.git
+$git push orgin master
+**if it doesnt work open GIT GUI and do it manually Pull first the push**
+
+

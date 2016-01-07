@@ -1,0 +1,4 @@
+A list of websites for references to various openxc related topics:
+fabric                           - http://www.fabfile.org/
+openxc-software files            - https://github.com/openxc
+openxc-android library reference - http://android.openxcplatform.com/reference/packages.html
