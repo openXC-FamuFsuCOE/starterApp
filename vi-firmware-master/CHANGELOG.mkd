@@ -1,0 +1,313 @@
+# OpenXC Vehicle Interface Firmware Changelog
+
+## v7.0.1
+
+* Fix: Delay at startup to allow timers to stabilize, to avoid shutting down too
+    soon when using OBD2_IGNITION_CHECK power mode with DEBUG=0;
+
+## v7.0.0
+
+* BREAKING: Update to latest OpenXC message format, including updated binary
+    spec.
+* BREAKING: Deprecate USB control commands for version and device ID - use
+    generic control command type instead, with the same payload format as if
+    sent via UART/BT.
+* BREAKING: Refactor tire and door handlers for use as signal decoders.
+* BREAKING: Changed `DEFAULT_UART_LOGGING_STATUS` build config to
+  `DEFAULT_LOGGING_OUTPUT` to be able to use UART, USB, or both for logging.
+* Feature: Support setting explicit CAN frame format when writing messages
+    (#230).
+* Feature: Support control command to enable/disable passthrough of CAN messages
+    on each CAN controller.
+* Feature: Support control command to dynamically change the status of the CAN
+    acceptance filter (#301).
+* Feature: Support control command to dynamically change the payload format
+    (#302). Note that binary commands sent to the VI are not yet supported,
+    there are still bugs.
+* Feature: Support new `action` field of diagnostic requests from OpenXC message
+    format.
+* Feature: Add a loopback property to CAN buses to support self-testing.
+* Improvement: Return a command response with a status for all diagnostic
+    request commands.
+* Improvement: Update required GNU for ARM version to -4_8-2014q2-20140609
+    (#261).
+* Improvement: Update required MPIDE version to 20140821 with associated updates
+    to Arduino-Makefile
+* Improvement: Update to latest version of chipKIT peripheral libraries.
+* Improvement: Update required nanopb version to v0.3.1 (#269).
+* Improvement: Compile test with LLVM's Clang, which provides much better
+    warnings. Fix a lot of minor but important things that it found.
+* Improvement: Use new self-receive capabilities in VI for a functional test
+    suite that runs on actual hardware. See `fab functionaltest`.
+* Fix: Don't let defined CAN messages interfere with normal operation when the
+    CAN AF is disabled (#260).
+* Fix: Pass a valid Pipeline object to signal handler (#263).
+* Fix: Fix double de-reference that caused the VI to crash when receiving
+    commands while using the binary payload format.
+* Fix: Match diagnostic request command name to the OpenXC message format.
+* Fix: Improve build process to make sure stray signals definitions are not
+    unintentionally included (#249).
+* Fix: Work around lack of symlinks in Windows when setting up development
+    environment (#259).
+* Fix: Calculate correct payload size when receiving data via USB endpoint 0 on
+    PIC32.
+* Fix: Respect configuration of raw write permissions for I/O interfaces (#274).
+* Fix: Use blocking UART writes on LPC17xx to work around a race condition
+    (#306)
+
+## v6.0.3
+
+* Fixed a regression with the ignoreDecoder, where signals were never marked as
+  'received' (#254).
+
+## v6.0.2
+
+* BREAKING CHANGE: The PLATFORM environment variable must now be explicitly set
+  when running any of the `make` goals.
+* BREAKING CHANGE: Move all platform-specific CAN code from generated
+  signals.cpp to vi-firmware internals (requires an update to openxc-python).
+* Include a config for Vagrant to build a VI firmware development environment.
+* Deprecate support for compiling in Cygwin - now recommending Vagrant as it
+  will be much more manageable to support.
+* Explicitly set all Makefile options when building binary releases.
+* Add compile shortcuts with Fabric and recommend that for most simple builds.
+
+## v6.0.1
+
+* Fixed a regression in CAN AF configuration on PIC32 platforms
+  ([#237](https://github.com/openxc/vi-firmware/issues/237))
+* Updated all shared handlers to use new V6.0 API, fixing the example
+  configurations in the process.
+* Fix a regression where signal handlers were not being called if frequency was
+  not unlimited.
+
+## v6.0
+
+* BREAKING CHANGE: Significantly refactored the `canread` and `canwrite` APIs to
+  making custom handlers much easier to implement.
+* BREAKING CHANGE: Refactor time.h and FrequencyClock API for clarity and
+  usefulness.
+* BREAKING CHANGE: Use uint8_t[] for CAN message payloads everywhere instead of
+  uint64_t to remove confusion about byte order.
+* BREAKING CHANGE: Using CanMessage struct in favor if loose id + data.
+* BREAKING CHANGE: Removed "reset" control command.
+* BREAKING CHANGE: Add "Pipeline" argument to custom signal read handler
+  function prototype, to allow triggering arbitrary new output messages without
+  decoding a signal by hand.
+* BREAKING CHANGE: Changed USB endpoint numbers to allow for optimal performance
+  and a new logging channel.
+* BREAKING CHANGE: JSON delimiter for output data changed to '\0' from '\r\n' to
+  match the required delimiter for input data. This requires updates to client
+  libraries.
+* BREAKING CHANGE: Changed the default platform when compiling from CHIPKIT to
+  FORDBOARD.
+* BREAKING CHANGE: Standardized most Makefile flags to get ready for dynamic
+  configuration. Check your environment variables against the new compilation
+  docs!
+* Merge "canemulator" build into the mainline branch, controlled with the
+  DEFAULT_EMULATED_DATA_STATUS compile-time flag.
+* Added support for request/response style diagnostic messages, and a special
+  build to automatically query for and set up recurring requests for supported
+  OBD-II PIDs.
+* Fix handling of 32-bit bitfields.
+* Add support for extended CAN IDs (29-bit).
+* Support configuration of CAN messages acceptance filters on the fly, rather
+  than only at startup. This changed an API, but an internal one, so it is not a
+  breaking change.
+* Add new control command to retrive a unique device ID (only works if Bluetooth
+  module is installed right now).
+* Support control commands via UART in additional to USB.
+* Moved debug logging to a secondary USB endpoint by default - re-enable UART
+  with UART_LOGGING flag.
+* Update MPIDE dependency to 2013-08* version. Re-run script/bootstrap.sh to get
+  the latest version.
+* Refactored bootstrap scripts to target specific build environments, so not
+  everyone needs every dependency.
+* Use new version of Arduino-Makefile which depends on Python and the PySerial
+  module.
+* Switch RN-42 Bluetooth modules into pairing mode if they supported so client
+  devices don't need to poll for a connection.
+* Add a power management mode that tries to infer if vehicle is running based on
+  OBD-II engine RPM and vehicle speed.
+* Remove need for external wire indicatin if UART is to be enabled on PIC32
+  after discovering a non-blocking USB status check API call .
+
+## v5.1.3
+
+* On VIs with an RN-42, disable configuration via Bluetooth to make the
+  connection more stable on Samsung Android devices.
+
+## v5.1.2
+
+* Add BINARY_OUTPUT flag
+* Add compile-time flags to control if raw CAN writes are allowed from various
+  interfaces
+* Refactored documentation.
+
+## v5.1.1
+
+* Fix hex flashing script in Ubuntu
+* Add a Windows .bat file for flashing a with avrdude
+
+## v5.1
+
+* Add BENCHTEST flag to permit sending CAN ACKs when in small CAN network.
+* Add an optional binary output format (experimental)
+
+## v5.0
+
+* Rename project from "CAN Translator Firmware" to "Vehicle Interface Firmware"
+* BREAKING CHANGE: Remove the sendFrequency flag for a CanSignal and replace it
+  with a FrequencyClock attribute that controls the maximum number of times per
+  second a signal will be sent.
+* BREAKING CHANGE: Add frequency control to CAN messages to allow rate limiting.
+* BREAKING CHANGE: Decrease memory footprint by change some data types to const,
+  splitting up CanMessage into 2 variants and optimizing all queue sizes.
+* An optional forceSendChanged attributed is added to CanSignal - if this is
+  true, a changed value will be sent regardless of the maximum frequency.
+* Add CAN and output interface statistics logging (behind the `__LOG_STATS__`
+  compile-time flag.
+* Fix receiving data over USB from some devices, e.g. Android.
+* Fix processing CAN messages with many CAN signals (15+) by flushing the
+  pipeline mid-translation.
+* Add emhashmap as a dependency (script/bootstrap.sh will take care of it)
+* Add frequency control for CAN messages that aren't pre-defined in the
+  signals.h implementation
+
+## v4.1
+
+* Automatically configure name and baud rate of an attached RN-4x Bluetooth
+  module (this adds a few seconds of delay on bootup if nothing is attached)
+* Cygwin: fix some building and flashing issues with the latest version of
+  Cygwin and all associated packages.
+
+## v4.0.1
+
+* Rename FleetCarma to CrossChasm C5 (to reflect true product name)
+* Fix build and issues with PIC32 USB interface, including C5
+
+## v4.0
+
+* BREAKING CHANGE: Add initialize() function to signals.h, must be
+  implemented by vehicle platforms. generate_signals.py supports calling
+  multiple initialization functions inside this method.
+* BREAKING CHANGE (for hardware): chipKIT uses same baud as LPC17xx for UART,
+  RN-42 modules will need to be updated.
+* BREAKING CHANGE: Moved .h files into subdirectories to minimize the number of
+  files at the top level.
+* BREAKING CHANGE: Moved almost all functions and data structures inside C++
+  namespaces - all code is now compiled with g++.
+* BREAKING CHANGE: Renamed many functions to avoid duplicating new namespace
+  name in function
+* BREAKING CHANGE: Remove UART compile-time flag in favor of setting UART status
+  via an external pin. This allows you to dynamically control sending over UART
+  when a Bluetooth module actually is attached and has a connected host.
+* BREAKING CHANGE: Major refactor of the JSON "mapping" code generation system.
+* PIC32-based VI will now go into low power mode if no CAN activity is detected
+  for 30 seconds, and will wake up when CAN activity resumes. There is a ~5
+  second timeout in the chipKIT bootloader that will cause the first 5 seconds
+  of CAN traffic after a wakeup to be missed.
+* Added support for FleetCarma data logger (a PIC32 device).
+
+## v3.2.1
+
+* Increase reliability of UART on LPC17xx.
+* Decrease data rate of emulator to more closely match a real vehicle (this
+  fixes issues with Bluetooth dropouts when using the emulator firmware).
+* Ensure consistent CAN message ordering when using the code generation tools.
+
+## v3.2
+
+* Support building to run under a USB bootloader on the LPC17xx.
+* Bug fix: custom value handlers are now called every time a signal is received,
+  regardless of the value of `send_same` and `send_frequency`.
+
+## v3.1
+
+* Minor improvements to bootstrap scripts for greater compatibility.
+* Add LED indicator module and some feedback when I/O interfaces are active.
+  * (PIC32) Flash user LED on chipKIT when CAN is active.
+  * (LPC17xx) Control 2 RGB LEDs based on CAN activity and I/O interface
+    activity.
+* Add microcontroller power control to enable sleeping when CAN is active.
+  * (LPC17xx) Put the micro into low power mode when CAN is quiet, wake with CAN
+    activity. Turn off Bluetooth module on Ford prototype board, 12v power
+    passthrough and all other peripherals.
+* Monitor VBUS of micro-USB port to improve performance when USB is disconnected
+  * (PIC32) If micro-USB VBUS is patched into analog input 0 on the chipKIT,
+    read true USB status from that pin.
+  * (LPC17xx) Read VBUS status from LPC17xx VBUS input.
+* Pull C queue implementation out to an independent library,
+  [emqueue](https://github.com/openxc/emqueue).
+
+## v3.0
+
+* BREAKING CHANGE: Combine `odometer` and `fine_odometer_since` restart into a
+  single high-precision signal, `odometer`. There is no more
+  fine_odometer_since_restart signal.
+* BREAKING CHANGE: `decodeCanMessage` in signals.h now is pass the `CanBus` the
+  message was received on; signals.cpp files will need to be updated.
+* PIC32: UART output at high baud rates (i.e. above 115200).
+* PIC32: Detect if USB is actually attached to avoid wasting time - speeds up
+  UART dramatically if micro-USB 5v line connected to Analog Input 0 instead of
+  5v port on chipKIT Network Shield.
+* Slow down emulator to better match a real vehicle's throughput.
+* For mappings with "ignore" flag, code generator for signals.cpp will set
+  signals handlers to `ignoreHandler` instead of skipping entirely.
+* CAN messages with identical IDs can now exist on both CAN1 and CAN2.
+
+## v2.1.3
+
+* Remove custom protocol for "binary" transfers - use "passthrough" JSON style.
+* Fix a NULL pointer dereference in the button handler that caused hard crashes
+  when CAN2 was connected.
+* Calculate correct value for rolling fuel consumed value, it incremented too
+  fast previously in some vehicles.
+
+## v2.1.2
+
+* Use bootstrap script when flashing binary firmware.
+* Refactor some custom message handlers
+* Avoid using cJSON in API for test suite
+
+## v2.1.1
+
+* Add bootstrap script to help new developers set up the build environment.
+* Add support for building from source in Windows (with Cygwin)
+* Support scripts in root directory are not moved to `script` subdirectory
+* JSON mapping format now expects message ID in hex (e.g. "0x80") instead of
+  decimal.
+
+## v2.1
+
+* Add Ethernet support on the chipKIT (thanks Ewgenij!)
+
+## v2.0
+
+* Further refactoring to support an additional platform, the ARM Cortex M3
+  (specifically the LPC1768/69), with the same code base.
+* Fix CAN bus freeze up issue and remove workaround.
+* Re-organize build process to improve performance when compiling.
+* Remove reader.py testing script, which was extracted into the openxc-python
+  library.
+
+## v1.3
+
+* Major refactoring of library internals for better portability.
+* Support sending OpenXC messages over UART in addition to USB.
+* Add experimental CAN message writing support.
+
+## v1.2
+
+* Add a unit test suite, compiled and run on the development computer.
+* Many, many bug fixes.
+* Workaround a CAN bus freeze up on the chipKIT by detecting the freeze and
+  restarting the CAN connection.
+
+## v1.1
+
+* Add custom handler infrastructure for messages and signals
+* Refactor CAN internals
+
+## v0.9
+* Pre-release version for testing, supports chipKIT

@@ -1,0 +1,140 @@
+{   "name": "example_messages",
+    "extra_sources": [
+        "handlers.cpp"
+    ],
+    "initializers": [
+        "initializeMyStuff",
+        "initializeOtherStuff"
+    ],
+    "loopers": [
+        "myLooper"
+    ],
+    "buses": {
+        "hs": {
+            "controller": 1,
+            "speed": 500000
+        },
+        "ms": {
+            "controller": 2,
+            "speed": 125000
+        }
+    },
+    "commands": [
+        { "name": "turn_signal_status",
+            "handler": "handleTurnSignalCommand"
+        }
+    ],
+    "messages": {
+        "0x128": {
+            "name": "ECM_z_5D2",
+            "bus": "hs",
+            "signals": {
+                "StrAnglAct": {
+                    "generic_name": "SteeringWheelAngle",
+                    "bit_position": 52,
+                    "bit_size": 12,
+                    "factor": 0.15392,
+                    "offset": 0,
+                    "decoder": "handleUnsignedSteeringWheelAngle"},
+                "StrAnglSign": {
+                    "generic_name": "steering_angle_sign",
+                    "decoder": "ignoreDecoder",
+                    "bit_position": 52,
+                    "bit_size": 12},
+                "EngSpd": {
+                    "generic_name": "engine_speed",
+                    "max_frequency": 15,
+                    "bit_position": 12,
+                    "bit_size": 8},
+                "GrshftPos": {
+                    "generic_name": "GearshiftPosition",
+                    "bit_position": 41,
+                    "bit_size": 3,
+                    "states": {
+                        "FIRST": [1],
+                        "SECOND": [2],
+                        "THIRD": [3],
+                        "FOURTH": [4],
+                        "REVERSE": [5],
+                        "NEUTRAL": [6]}
+                },
+                "StrAnglErr": {
+                    "decoder": "ignoreDecoder",
+                    "generic_name": "steering_wheel_angle_error",
+                    "bit_position": 44,
+                    "bit_size": 12
+                }
+            },
+            "handlers": ["handleSteeringWheelMessage"]
+        },
+        "0x256": {
+            "name": "DoorMessage",
+            "bus": "hs",
+            "signals": {
+                "Driver": {
+                    "generic_name": "driver_door",
+                    "bit_position": 52,
+                    "bit_size": 12,
+                    "decoder": "doorStatusDecoder"
+                },
+                "Passenger": {
+                    "generic_name": "passenger_door",
+                    "bit_position": 52,
+                    "bit_size": 12,
+                    "decoder": "doorStatusDecoder"
+                },
+                "RearLeft": {
+                    "generic_name": "rear_left_door",
+                    "bit_position": 12,
+                    "bit_size": 8,
+                    "decoder": "doorStatusDecoder"
+                },
+                "RearRight": {
+                    "generic_name": "rear_right_door",
+                    "bit_position": 41,
+                    "bit_size": 3,
+                    "decoder": "doorStatusDecoder"
+                }
+            }
+        },
+        "0x49": {
+            "name": "BrkSt",
+            "bus": "hs",
+            "signals": {
+                "BrakePedalPosition": {
+                    "generic_name": "brake_pedal_status",
+                    "send_same": false,
+                    "decoder": "booleanDecoder",
+                    "bit_position": 0,
+                    "bit_size": 1
+                },
+                "TirePressure": {
+                    "generic_name": "tire_pressure_front_left",
+                    "decoder": "tirePressureDecoder",
+                    "bit_position": 3,
+                    "bit_size": 5
+                }
+            }
+        },
+        "0x121": {
+            "name": "Cluster",
+            "bus": "hs",
+            "signals": {
+                "TurnSignalLeft": {
+                    "generic_name": "turn_signal_left",
+                    "decoder": "booleanDecoder",
+                    "bit_position": 0,
+                    "bit_size": 1,
+                    "writable": true
+                },
+                "TurnSignalRight": {
+                    "generic_name": "turn_signal_right",
+                    "decoder": "booleanDecoder",
+                    "bit_position": 1,
+                    "bit_size": 1,
+                    "writable": true
+                }
+            }
+        }
+    }
+}

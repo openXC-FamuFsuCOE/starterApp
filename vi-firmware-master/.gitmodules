@@ -1,0 +1,38 @@
+[submodule "src/libs/nxpUSBlib"]
+	path = src/libs/nxpUSBlib
+	url = https://github.com/openxc/nxpUSBlib.git
+[submodule "src/libs/cJSON"]
+	path = src/libs/cJSON
+	url = https://github.com/openxc/cJSON.git
+[submodule "src/libs/CDL"]
+	path = src/libs/CDL
+	url = https://github.com/openxc/nxp-cdl
+[submodule "src/libs/BSP"]
+	path = src/libs/BSP
+	url = https://github.com/openxc/nxp-bsp
+[submodule "src/libs/arduino.mk"]
+	path = src/libs/arduino.mk
+	url = https://github.com/peplin/Arduino-Makefile
+    ignore = untracked
+[submodule "src/libs/emqueue"]
+	path = src/libs/emqueue
+	url = https://github.com/openxc/emqueue
+[submodule "src/libs/AT-commander"]
+	path = src/libs/AT-commander
+	url = https://github.com/openxc/AT-commander
+[submodule "src/libs/nanopb"]
+	path = src/libs/nanopb
+	url = https://code.google.com/p/nanopb/
+[submodule "src/libs/openxc-message-format"]
+	path = src/libs/openxc-message-format
+	url = https://github.com/openxc/openxc-message-format
+    ignore = untracked
+[submodule "src/libs/bitfield-c"]
+	path = src/libs/bitfield-c
+	url = https://github.com/openxc/bitfield-c
+[submodule "src/libs/isotp-c"]
+	path = src/libs/isotp-c
+	url = https://github.com/openxc/isotp-c
+[submodule "src/libs/uds-c"]
+	path = src/libs/uds-c
+	url = https://github.com/openxc/uds-c
